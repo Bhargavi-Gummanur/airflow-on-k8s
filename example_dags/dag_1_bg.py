@@ -174,7 +174,7 @@ with DAG(
     t1 = PythonOperator(
         task_id='extraction_of_metadata',
         python_callable=extract_metadata,
-        executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata"}}
+        executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata:0.1"}}
     )
 
 
@@ -182,7 +182,7 @@ with DAG(
     t2 = PythonOperator(
         task_id='print_metadata',
         python_callable = print_stats_schema,
-        executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata"}}
+        executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata:0.1"}}
     )
     
 
