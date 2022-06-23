@@ -45,7 +45,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
                                     image="alpine",
-                                    cmds=["python", "-c"],
+                                    #cmds=["python", "-c"],
                                     #cmds=["bash", "-cx"],
                                     #arguments=[return_hello_world()]
                                     cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
