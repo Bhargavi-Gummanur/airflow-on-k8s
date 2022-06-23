@@ -27,7 +27,7 @@ dag = DAG(
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
-                                    image="python:3.8",
+                                    image="python:3.6",
                                     cmds=["python", "-c"],
                                     arguments=["print('hello world')"],
                                     labels={"foo": "bar"},
@@ -38,7 +38,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     )
 
 bash_task = KubernetesPodOperator(namespace='default',
-                                  image="python:3.8",
+                                  image="ubuntu:16.04",
                                   cmds=["bash", "-cx"],
                                   arguments=["date"],
                                   labels={"foo": "bar"},
