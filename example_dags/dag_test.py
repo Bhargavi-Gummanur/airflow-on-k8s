@@ -27,7 +27,7 @@ dag = DAG(
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
-                                    image="docker.io/glmlopsuser/airflow-metadata:0.1",
+                                    image="python:3.8",
                                     cmds=["python", "-c"],
                                     arguments=["print('hello world')"],
                                     labels={"foo": "bar"},
@@ -38,7 +38,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     )
 
 bash_task = KubernetesPodOperator(namespace='default',
-                                  image="docker.io/glmlopsuser/airflow-metadata:0.1",
+                                  image="python:3.8",
                                   cmds=["bash", "-cx"],
                                   arguments=["date"],
                                   labels={"foo": "bar"},
