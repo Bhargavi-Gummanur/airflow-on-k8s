@@ -16,7 +16,7 @@ def return_hello_world(**context):
         "2":"two"
     }
     #context['task_instance'].xcom_push(key='pushing params',value = params)
-    return params
+    return "params"
 def pull_xcom(**kwargs):
     ti = kwargs['task_instance']
     params = ti.xcom_pull(task_ids = 'passing-task-python')
