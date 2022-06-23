@@ -15,11 +15,11 @@ def return_hello_world(**context):
         "1":"one",
         "2":"two"
     }
-    #context['task_instance'].xcom_push(key='pushing params',value = params)
+    context['task_instance'].xcom_push(key='pushing params',value = params)
     return params
 def pull_xcom(**kwargs):
     ti = kwargs['task_instance']
-    params = ti.xcom_pull(task_ids = 'passing-task-python')
+    params = ti.xcom_pull(task_ids = 'passing-task-python',key='pushing params')
     print(params)
 
 def print_another(params):
@@ -33,12 +33,13 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=5)
+    'retry_delay': timedelta(minutes=5),
+    'provide_context' : True
 }
 
 dag = DAG(
     'kubernetes_sample_testv2', default_args=default_args,
-    schedule_interval=timedelta(minutes=10), tags=['example'], 'provide_context': True)
+    schedule_interval=timedelta(minutes=10), tags=['example'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
