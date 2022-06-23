@@ -19,7 +19,7 @@ def return_hello_world(**context):
     return params
 def pull_xcom(**kwargs):
     ti = kwargs['task_instance']
-    params = ti.xcom_pull(task_ids = 'passing-task-python',key = 'pushing params')
+    params = ti.xcom_pull(task_ids = 'passing-task-python', key='pushing params')
     print(params)
 
 def print_another(params):
@@ -38,7 +38,7 @@ default_args = {
 
 dag = DAG(
     'kubernetes_sample_testv2', default_args=default_args,
-    schedule_interval=timedelta(minutes=10), tags=['example'])
+    schedule_interval=timedelta(minutes=10), tags=['example'], 'provide_context': True)
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
