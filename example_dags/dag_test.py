@@ -46,6 +46,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
                                     #cmds=["python", "-c"],
+                                    cmds=["bash", "-cx"]
                                     arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_hello_world())],
                                     labels={"foo": "bar"},
                                     name="passing-python",
