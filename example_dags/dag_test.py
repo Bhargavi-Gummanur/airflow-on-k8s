@@ -47,12 +47,12 @@ python_task = KubernetesPodOperator(namespace='default',
                                     do_xcom_push = True,
                                     dag=dag
                                     )
-ti = kwargs['task_instance']
+
 
 bash_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
                                     #cmds=["python", "-c"],
-                                    arguments=[print_another(ti.xcom_pull("passing-task-python"))],
+                                    arguments=[print_another('{{task_instance.xcom_pull('passing-task-python')}}')],
                                     labels={"foo": "bar"},
                                     name="passing-python1",
                                     task_id="passing-task-python1",
