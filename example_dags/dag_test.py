@@ -48,7 +48,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     #cmds=["python", "-c"],
                                     cmds=["bash", "-cx"],
                                     #arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_hello_world())]
-                                    arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_hello_world())],
+                                    cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
