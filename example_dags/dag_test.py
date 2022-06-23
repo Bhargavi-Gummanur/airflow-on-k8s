@@ -10,7 +10,14 @@ from datetime import datetime, timedelta
 
 def return_hello_world(s):
     print(s)
-    return "print('hello world')"
+    params = {
+        "1":"one",
+        "2":"two"
+    }
+    return params
+
+def print_another(params):
+    print(params)
     
 default_args = {
     'owner': 'airflow',
@@ -31,7 +38,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
-                                    cmds=["python", "-c"],
+                                    #cmds=["python", "-c"],
                                     arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_hello_world("hi"))],
                                     labels={"foo": "bar"},
                                     name="passing-python",
@@ -40,11 +47,12 @@ python_task = KubernetesPodOperator(namespace='default',
                                     do_xcom_push = True,
                                     dag=dag
                                     )
+ti = kwargs['task_instance']
 
 bash_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
-                                    cmds=["python", "-c"],
-                                    arguments=[task_instance.xcom_pull("passing-task-python")],
+                                    #cmds=["python", "-c"],
+                                    arguments=[print_another(ti.xcom_pull("passing-task-python"))],
                                     labels={"foo": "bar"},
                                     name="passing-python1",
                                     task_id="passing-task-python1",
