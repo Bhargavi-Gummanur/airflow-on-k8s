@@ -8,7 +8,9 @@ from datetime import datetime, timedelta
 
 # log = logging.getLogger(__name__)
 
-
+def return_hello_world():
+    return "print('hello world')"
+    
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -29,7 +31,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
                                     cmds=["python", "-c"],
-                                    arguments=["print('hello world')"],
+                                    arguments=[return_hello_world()],
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
