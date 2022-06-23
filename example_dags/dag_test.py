@@ -16,7 +16,7 @@ def return_hello_world(**context):
         "2":"two"
     }
     #context['task_instance'].xcom_push(key='pushing params',value = params)
-    return "params"
+    return "print('hello world')"
 def pull_xcom(**kwargs):
     ti = kwargs['task_instance']
     params = ti.xcom_pull(task_ids = 'passing-task-python')
@@ -44,10 +44,10 @@ dag = DAG(
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
-                                    image="python:3.6",
-                                    #cmds=["python", "-c"],
+                                    image="alpine",
+                                    cmds=["python", "-c"],
                                     #cmds=["bash", "-cx"],
-                                    #arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_hello_world())]
+                                    #arguments=[return_hello_world()]
                                     cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
                                     labels={"foo": "bar"},
                                     name="passing-python",
