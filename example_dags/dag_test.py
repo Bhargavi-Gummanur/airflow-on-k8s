@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 
 # log = logging.getLogger(__name__)
 
-def return_hello_world():
+def return_hello_world(s):
+    print(s)
     return "print('hello world')"
     
 default_args = {
@@ -31,7 +32,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
                                     cmds=["python", "-c"],
-                                    arguments=[return_hello_world()],
+                                    arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_hello_world("hi"))],
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
@@ -40,16 +41,16 @@ python_task = KubernetesPodOperator(namespace='default',
                                     )
 
 bash_task = KubernetesPodOperator(namespace='default',
-                                  image="ubuntu:16.04",
-                                  cmds=["bash", "-cx"],
-                                  arguments=["date"],
-                                  labels={"foo": "bar"},
-                                  name="passing-bash",
-                                  # is_delete_operator_pod=False,
-                                  task_id="passing-task-bash",
-                                  get_logs=True,
-                                  dag=dag
+                                    image="python:3.6",
+                                    cmds=["python", "-c"],
+                                    arguments=[task_instance.xcom_pull('write-xcom')[0]],
+                                    labels={"foo": "bar"},
+                                    name="passing-python",
+                                    task_id="passing-task-python",
+                                    get_logs=True,
+                                    dag=dag
                                   )
 
-python_task.set_upstream(start)
-bash_task.set_upstream(start)
+#python_task.set_upstream(start)
+#bash_task.set_upstream(start)
+start >> python_task >> bash_task
