@@ -17,6 +17,7 @@ def return_hello_world(**context):
         "1":"one",
         "2":"two"
     }
+    '''
     save_path = "/airflow/xcom"
     filename = "return.json"
     comp = os.path.join(save_path,filename)
@@ -24,6 +25,7 @@ def return_hello_world(**context):
     json_file = open(filename, 'w')
     json_file.write('params')
     json_file.close()
+    '''
     return "print('hello world')"
 def pull_xcom(**kwargs):
     ti = kwargs['task_instance']
