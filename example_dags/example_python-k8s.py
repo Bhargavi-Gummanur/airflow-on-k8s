@@ -50,7 +50,7 @@ dag = DAG(
 def sample_fun():
     value = {"hi":"hello"}
     print(value)
-    with open("sample.json",f):
+    with open("sample.json","w") as f:
         json.dump(value,f)
     return 'print("helo")'
 
