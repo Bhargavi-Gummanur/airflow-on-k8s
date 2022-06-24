@@ -2,7 +2,7 @@
 This is an example dag for using the KubernetesPodOperator.
 """
 import logging
-
+from airflow.configuration import conf
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 
 # log = logging.getLogger(__name__)
 
+namespace = conf.get("kubernetes", "NAMESPACE")
+print("namespace",namespace)
 
 default_args = {
     'owner': 'airflow',
@@ -38,7 +40,7 @@ python_task = KubernetesPodOperator(namespace='rakeshl-test',
                                     task_id="passing-task-python",
                                     get_logs=True,
                                     resources={'limit_memory': "250M", 'limit_cpu': "100m"},
-                                    do_xcom_push = True,
+                                    #do_xcom_push = True,
                                     dag=dag
                                     )
 
