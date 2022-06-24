@@ -12,7 +12,7 @@ from airflow.kubernetes import pod
 from kubernetes.client import models as k8s
 #from airflow.contrib.kubernetes import pod
 
-pod_resources = Resources()
+pod_resources = pod.Resources()
 pod_resources.request_cpu = '1000m'
 pod_resources.request_memory = '2048Mi'
 pod_resources.limit_cpu = '2000m'
