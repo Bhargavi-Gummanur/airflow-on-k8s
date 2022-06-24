@@ -50,7 +50,7 @@ def sample_fun():
         json.dump(value,f)
 
 
-python_task = KubernetesPodOperator(namespace=namespace,
+python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
                                     #cmds=["python", "-c"],
                                     arguments=[sample_fun()],
