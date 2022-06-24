@@ -46,8 +46,12 @@ python_task = KubernetesPodOperator(namespace=namespace,
                                     name="passing-python",
                                     task_id="passing-task-python",
                                     get_logs=True,
-                                    resources=compute_resources,
                                     do_xcom_push = True,
+                                    resources={"request_cpu": "4",
+                                                "request_memory": "8G",
+                                                "limit_cpu": "4",
+                                                "limit_memory": "8G"},
+                                    
                                     dag=dag
                                     )
 
