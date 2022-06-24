@@ -1,6 +1,7 @@
 import logging
 import json
 from airflow import DAG
+import os
 import airflow.models.taskinstance as task
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
