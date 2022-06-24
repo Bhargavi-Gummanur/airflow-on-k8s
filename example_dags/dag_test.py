@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from airflow.kubernetes import pod
 from kubernetes.client import models as k8s
 #from airflow.contrib.kubernetes import pod
+import json
 
 pod_resources = pod.Resources()
 pod_resources.request_cpu = '1000m'
