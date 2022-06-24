@@ -45,7 +45,7 @@ dag = DAG(
     schedule_interval=timedelta(minutes=10), tags=['example'])
 def sample1():
     with open("sample.json","r") as f:
-        val = json.loads(f)
+        val = json.load(f)
     print(val) 
     return 'print("hi")'
 
