@@ -43,6 +43,11 @@ default_args = {
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example'])
+def sample1():
+    with open("sample.json","r") as f:
+        val = json.loads(f)
+    print(val) 
+    return 'print("hi")'
 
 def sample_fun():
     value = {"hi":"hello"}
@@ -65,9 +70,9 @@ python_task = KubernetesPodOperator(namespace='default',
                                     )
 
 bash_task = KubernetesPodOperator(namespace='default',
-                                  image="ubuntu:16.04",
-                                  cmds=["bash", "-cx"],
-                                  arguments=["date"],
+                                  image="python:3.6",
+                                  cmds=["python", "-c"],
+                                  arguments=[sample1()],
                                   labels={"foo": "bar"},
                                   name="passing-bash",
                                   # is_delete_operator_pod=False,
