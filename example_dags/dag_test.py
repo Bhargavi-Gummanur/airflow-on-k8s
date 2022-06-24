@@ -21,7 +21,7 @@ def return_hello_world(**context):
     filename = "return.json"
     comp = os.path.join(save_path,filename)
     #context['task_instance'].xcom_push(key='pushing params',value = params)
-    json_file = open(comp, 'w')
+    json_file = open(filename, 'w')
     json_file.write(params)
     json_file.close()
     return "print('hello world')"
