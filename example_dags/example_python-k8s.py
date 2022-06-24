@@ -50,6 +50,8 @@ dag = DAG(
 def sample_fun():
     value = {"hi":"hello"}
     print(value)
+    with open("sample.json",f):
+        json.dump(value,f)
     return 'print("helo")'
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
