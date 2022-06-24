@@ -46,8 +46,8 @@ dag = DAG(
 start = DummyOperator(task_id='run_this_first', dag=dag)
 def sample_fun():
     value = {"hi":"hello"}
-    with open("sample.json","w") as f:
-        json.dump(value,f)
+    #with open("sample.json","w") as f:
+    #    json.dump(value,f)
 
 
 python_task = KubernetesPodOperator(namespace='default',
@@ -59,7 +59,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     task_id="passing-task-python",
                                     #resources=pod_resources,
                                     #pod_template_file="/opt/airflow/dags/example-python.yaml",
-                                    get_logs=True,
+                                   
                                     #do_xcom_push = True,
                                     #is_delete_operator_pod=False,
                                     
