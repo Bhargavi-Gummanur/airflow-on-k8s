@@ -8,6 +8,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
+from airflow.kubernetes import pod
 from kubernetes.client import models as k8s
 #from airflow.contrib.kubernetes import pod
 
