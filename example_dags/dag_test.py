@@ -74,7 +74,7 @@ bash_task = KubernetesPodOperator(namespace='default',
                                   name="passing-bash",
                                   # is_delete_operator_pod=False,
                                   task_id="passing-task-bash",
-                                  get_logs=True,
+                                  #get_logs=True,
                                   dag=dag
                                   )
 
