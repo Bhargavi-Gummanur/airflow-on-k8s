@@ -39,7 +39,9 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=5)
 }
-
+def sample_fun():
+    value = {"hi":"hello"}
+    print(value)
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example'])
@@ -48,8 +50,8 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
-                                    cmds=["python", "-c"],
-                                    arguments=["print('hello world')"],
+                                    #cmds=["python", "-c"],
+                                    arguments=[sample_fun()],
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
