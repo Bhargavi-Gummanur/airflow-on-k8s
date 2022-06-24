@@ -82,4 +82,4 @@ bash_task = KubernetesPodOperator(namespace='default',
                                   )
 
 python_task.set_upstream(start)
-bash_task.set_upstream(start)
+bash_task.set_upstream(python_task)
