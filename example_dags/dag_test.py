@@ -31,7 +31,7 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='rakeshl-test',
+python_task = KubernetesPodOperator(namespace=namespace,
                                     image="python:3.6",
                                     cmds=["python", "-c"],
                                     arguments=["print('hello world')"],
@@ -39,8 +39,8 @@ python_task = KubernetesPodOperator(namespace='rakeshl-test',
                                     name="passing-python",
                                     task_id="passing-task-python",
                                     get_logs=True,
-                                    resources={'limit_memory': "250M", 'limit_cpu': "100m"},
-                                    #do_xcom_push = True,
+                                    resources=pod.Resources(request_cpu=0.2,limit_cpu=0.5,request_memory='512Mi',limit_memory='1536Mi'),
+                                    do_xcom_push = True,
                                     dag=dag
                                     )
 
