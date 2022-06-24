@@ -53,7 +53,7 @@ python_task = KubernetesPodOperator(namespace=namespace,
                                     task_id="passing-task-python",
                                     resources=pod_resources,
                                     get_logs=True,
-                                    do_xcom_push = True,
+                                    do_xcom_push = False,
                                      
                                     
                                     dag=dag
