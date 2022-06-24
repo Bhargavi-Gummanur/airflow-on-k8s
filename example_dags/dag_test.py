@@ -43,32 +43,27 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='default',
-                                    image="alpine",
-                                    #cmds=["python", "-c"],
-                                    #cmds=["bash", "-cx"],
-                                    #arguments=[return_hello_world()]
-                                    cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
-                                    labels={"foo": "bar"},
-                                    name="passing-python",
-                                    task_id="passing-task-python",
-                                    get_logs=True,
-                                    do_xcom_push = True,
-                                    dag=dag
-                                    )
+write_xcom = KubernetesPodOperator(
+        namespace='default',
+        image='alpine',
+        cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
+        name="write-xcom",
+        do_xcom_push=True,
+        is_delete_operator_pod=True,
+        in_cluster=True,
+        task_id="write-xcom",
+        get_logs=True,
+        dag=dag,
+)
 
+pod_task_xcom_result = BashOperator(
+        bash_command="echo \"{{ task_instance.xcom_pull('write-xcom')[0] }}\"",
+        task_id="pod_task_xcom_result",
+        dag=dag,
+)
 
-bash_task = KubernetesPodOperator(namespace='default',
-                                    image="python:3.6",
-                                    #cmds=["python", "-c"],
-                                    arguments=[pull_xcom],
-                                    labels={"foo": "bar"},
-                                    name="passing-python1",
-                                    task_id="passing-task-python1",
-                                    get_logs=True,
-                                    dag=dag
-                                  )
+write_xcom >> pod_task_xcom_result
 
 #python_task.set_upstream(start)
 #bash_task.set_upstream(start)
-start >> python_task >> bash_task
+#start >> python_task >> bash_task
