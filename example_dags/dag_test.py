@@ -12,7 +12,11 @@ from airflow.kubernetes import pod
 from kubernetes.client import models as k8s
 #from airflow.contrib.kubernetes import pod
 
-
+pod_resources = Resources()
+pod_resources.request_cpu = '1000m'
+pod_resources.request_memory = '2048Mi'
+pod_resources.limit_cpu = '2000m'
+pod_resources.limit_memory = '4096Mi'
 # log = logging.getLogger(__name__)
 
 namespace = conf.get("kubernetes", "NAMESPACE")
@@ -47,7 +51,7 @@ python_task = KubernetesPodOperator(namespace=namespace,
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
-                                    resources={'limit_memory': "1M", 'limit_cpu': "1m"},
+                                    resources=pod_resources,
                                     get_logs=True,
                                     do_xcom_push = True,
                                      
