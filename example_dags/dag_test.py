@@ -37,6 +37,7 @@ python_task = KubernetesPodOperator(namespace='rakeshl-test',
                                     name="passing-python",
                                     task_id="passing-task-python",
                                     get_logs=True,
+                                    resources={'limit_memory': "250M", 'limit_cpu': "100m"},
                                     do_xcom_push = True,
                                     dag=dag
                                     )
