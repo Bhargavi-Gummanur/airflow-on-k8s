@@ -51,9 +51,10 @@ python_task = KubernetesPodOperator(namespace='default',
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
-                                    resources=pod_resources,
+                                    #resources=pod_resources,
+                                    pod_template_file = "example-python.yaml"
                                     get_logs=True,
-                                    do_xcom_push = False,
+                                    do_xcom_push = True,
                                      
                                     
                                     dag=dag
