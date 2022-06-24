@@ -44,11 +44,11 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='default',
-                                    image="python:3.6",
-                                    cmds=["python", "-c"],
-                                    arguments=["print('hello world')"],
-                                    labels={"foo": "bar"},
+python_task = KubernetesPodOperator(namespace=namespace,
+                                    #image="python:3.6",
+                                    #cmds=["python", "-c"],
+                                    #arguments=["print('hello world')"],
+                                    #labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
                                     #resources=pod_resources,

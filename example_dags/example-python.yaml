@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    dag_id: kubernetes_sample_v2
+    task_id: passing-task-python
+    try_number: '1'
+  labels:
+    airflow-worker: worker-config
+    airflow_version: 2.0.1
+    dag_id: kubernetes_sample_v2
+    kubernetes_executor: 'True'
+    task_id: passing-task-python
+    try_number: '1'
+  name: kubernetessamplev2passingtaskpython.d657ef60e00e4504be76ce3cef97185b
+  namespace: rakeshl-test
+spec:
+  containers:
+  - args:
+    - airflow
+    - tasks
+    - run
+    - kubernetes_sample_v2
+    - passing-task-python
+    - '2022-06-24T04:00:39.920559+00:00'
+    - --subdir
+    - /usr/local/airflow/dags/gitdags/example_dags/dag_test.py
+    env:
+    - name: AIRFLOW_IS_K8S_EXECUTOR_POD
+      value: 'True'
+    image: gl1-mgmt-pulp-vm1.gl-hpe.local/gcr.io/mapr-252711/airflow:ecp-5.3.0-rc3
+    name: base
+    resources:
+      limits:
+        memory: "200m"
+        cpu: "100m"
+      requests:
+        memory: "100m"
+        cpu: "100m"
