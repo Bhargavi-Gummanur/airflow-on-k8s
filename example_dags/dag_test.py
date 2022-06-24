@@ -9,7 +9,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
 from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
 from kubernetes.client import models as k8s
-from airflow.contrib.kubernetes import pod
+#from airflow.contrib.kubernetes import pod
 
 
 # log = logging.getLogger(__name__)
@@ -46,9 +46,10 @@ python_task = KubernetesPodOperator(namespace=namespace,
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
+                                    resources={'limit_memory': "250M", 'limit_cpu': "100m"},
                                     get_logs=True,
                                     do_xcom_push = True,
-                                    resources=pod.Resources(),
+                                     
                                     
                                     dag=dag
                                     )
