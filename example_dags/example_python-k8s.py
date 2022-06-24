@@ -39,10 +39,7 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=5)
 }
-def sample_fun():
-    value = {"hi":"hello"}
-    print(value)
-    return 'print("helo")'
+
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example'])
