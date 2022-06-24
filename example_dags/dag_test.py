@@ -1,5 +1,5 @@
 import logging
-
+import json
 from airflow import DAG
 import airflow.models.taskinstance as task
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
@@ -17,6 +17,8 @@ def return_hello_world(**context):
         "2":"two"
     }
     #context['task_instance'].xcom_push(key='pushing params',value = params)
+    with open("/airflow/xcom/return.json", 'w') as json_file:
+        json.dumps(params,json_file)
     return "print('hello world')"
 def pull_xcom(**kwargs):
     ti = kwargs['task_instance']
@@ -42,12 +44,14 @@ dag = DAG(
     'kubernetes_sample_testv2', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example'])
 
-#start = DummyOperator(task_id='run_this_first', dag=dag)
+start = DummyOperator(task_id='run_this_first', dag=dag)
 
 write_xcom = KubernetesPodOperator(
         namespace='default',
         image='alpine',
-        cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
+        cmds = ["python","-c"]
+        arguments = [return_hello_world()]
+        #cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
         name="write-xcom",
         do_xcom_push=True,
         is_delete_operator_pod=True,
