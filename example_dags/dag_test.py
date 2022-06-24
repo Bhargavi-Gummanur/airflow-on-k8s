@@ -5,6 +5,7 @@ import airflow.models.taskinstance as task
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.bash_operator import BashOperator
 from datetime import datetime, timedelta
 
 # log = logging.getLogger(__name__)
