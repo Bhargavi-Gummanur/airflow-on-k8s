@@ -8,11 +8,18 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
+from airflow.contrib.kubernetes.pod import Resources
 
 # log = logging.getLogger(__name__)
 
 namespace = conf.get("kubernetes", "NAMESPACE")
 print("namespace",namespace)
+
+pod_resources = Resources()
+pod_resources.request_cpu = '1000m'
+pod_resources.request_memory = '2048Mi'
+pod_resources.limit_cpu = '2000m'
+pod_resources.limit_memory = '4096Mi'
 
 default_args = {
     'owner': 'airflow',
@@ -39,7 +46,7 @@ python_task = KubernetesPodOperator(namespace=namespace,
                                     name="passing-python",
                                     task_id="passing-task-python",
                                     get_logs=True,
-                                    resources=pod.Resources(request_cpu=0.2,limit_cpu=0.5,request_memory='512Mi',limit_memory='1536Mi'),
+                                    resources=pod_resources,
                                     do_xcom_push = True,
                                     dag=dag
                                     )
