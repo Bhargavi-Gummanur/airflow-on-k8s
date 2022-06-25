@@ -73,7 +73,8 @@ python_task = KubernetesPodOperator(namespace='default',
                                     )
 
 bash_task = KubernetesPodOperator(namespace='default',
-                                  image="python:3.6",
+                                  image="glmlopsuser/airflow-metadata:0.1",
+                                  image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
                                   cmds=["python", "-c"],
                                   arguments=[sample1()],
                                   labels={"foo": "bar"},
