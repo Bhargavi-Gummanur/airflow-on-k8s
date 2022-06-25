@@ -46,6 +46,7 @@ default_args = {
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
     schedule_interval=timedelta(minutes=10), tags=['example'])
+'''
 def sample1():
     with open("sample.json","r") as f:
         val = json.load(f)
@@ -58,14 +59,15 @@ def sample_fun():
     with open("sample.json","w") as f:
         json.dump(value,f)
     return 'print("helo")'
+'''
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
-                                    image="glmlopsuser/airflow-metadata:0.1",
+                                    image="glmlopsuser/my-airflow-python:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
-                                    cmds=["python", "-c"],
-                                    arguments=[sample_fun()],
+                                    cmds=["python"],
+                                    arguments=["task1.py","hi"],
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
@@ -74,10 +76,10 @@ python_task = KubernetesPodOperator(namespace='default',
                                     )
 
 bash_task = KubernetesPodOperator(namespace='default',
-                                  image="glmlopsuser/airflow-metadata:0.1",
+                                  image="glmlopsuser/my-airflow-python:0.2",
                                   image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
-                                  cmds=["python", "-c"],
-                                  arguments=[sample1()],
+                                  cmds=["python"],
+                                  arguments=["task2.py","hi"],
                                   labels={"foo": "bar"},
                                   name="passing-bash",
                                   # is_delete_operator_pod=False,
