@@ -25,6 +25,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
+from kubernetes.client import models as k8s
 
 # log = logging.getLogger(__name__)
 
@@ -59,7 +60,8 @@ def sample_fun():
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
-                                    image="python:3.6",
+                                    image="docker.io/glmlopsuser/airflow-metadata:0.1",
+                                    image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata')],
                                     cmds=["python", "-c"],
                                     arguments=[sample_fun()],
                                     labels={"foo": "bar"},
