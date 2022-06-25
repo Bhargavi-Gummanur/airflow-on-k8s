@@ -60,7 +60,7 @@ def sample_fun():
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
-                                    image="docker.io/glmlopsuser/airflow-metadata:0.1",
+                                    image="docker.io/glmlopsuser/airflow-metadata",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata')],
                                     cmds=["python", "-c"],
                                     arguments=[sample_fun()],
