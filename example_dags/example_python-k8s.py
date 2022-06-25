@@ -27,7 +27,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
 from kubernetes.client import models as k8s
 print("hi")
-import tensorflow_data_validation as tfdv
+#import tensorflow_data_validation as tfdv
 
 # log = logging.getLogger(__name__)
 
