@@ -63,11 +63,11 @@ def sample_fun():
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='default',
-                                    image="python:3.6",
-                                    #image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
-                                    cmds=["python","-c"],
-                                    arguments=['print("hello")'],
+python_task = KubernetesPodOperator(namespace='airflowop-system',
+                                    image="glmlopsuser/my-airflow-python:0.2",
+                                    image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
+                                    cmds=["python"],
+                                    arguments=["task1.py","hi"],
                                     labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
@@ -75,7 +75,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     dag=dag
                                     )
 
-bash_task = KubernetesPodOperator(namespace='default',
+bash_task = KubernetesPodOperator(namespace='airflowop-system',
                                   image="glmlopsuser/my-airflow-python:0.2",
                                   image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
                                   cmds=["python"],
