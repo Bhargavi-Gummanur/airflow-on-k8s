@@ -35,17 +35,17 @@ print("hi")
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2019, 7, 11, 0, 0),
+    'start_date': airflow.utils.dates.days_ago(2),
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5)
+    'retries': 0,
+    #'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG(
     'kubernetes_sample_cmf', default_args=default_args,
-    schedule_interval=timedelta(minutes=10), tags=['example'])
+    schedule_interval=timedelta(seconds=10), tags=['example'])
 '''
 def sample1():
     with open("sample.json","r") as f:
