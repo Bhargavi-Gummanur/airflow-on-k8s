@@ -65,7 +65,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='default',
                                     image="python:3.6",
-                                    image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
+                                    #image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
                                     cmds=["python","-c"],
                                     arguments=['print("hello")'],
                                     labels={"foo": "bar"},
