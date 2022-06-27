@@ -19,7 +19,7 @@
 """Example DAG demonstrating the usage of the BashOperator."""
 
 from datetime import timedelta
-
+print("hi")
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.dummy_operator import DummyOperator
