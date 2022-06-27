@@ -49,7 +49,7 @@ with DAG(
 
     k = KubernetesPodOperator(
         namespace='airflowop-system',
-        image="glmlopsuser/my-airflow-python:0.1",
+        image="glmlopsuser//airflow-metadata:0.1",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
         cmds=["python"],
         arguments=['print("hi")'],
