@@ -50,9 +50,9 @@ with DAG(
     k = KubernetesPodOperator(
         namespace='airflowop-system',
         image="glmlopsuser/my-airflow-python:0.1",
-        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
-        cmds=["bash", "-cx"],
-        arguments=["echo hello here"],
+        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
+        cmds=["python"],
+        arguments=['print("hi")'],
         labels={"foo": "bar"},
         name="airflow-test-pod",
         task_id="task",
