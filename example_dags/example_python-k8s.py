@@ -20,6 +20,7 @@ This is an example dag for using the KubernetesPodOperator.
 """
 import logging
 import json
+import airflow
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
