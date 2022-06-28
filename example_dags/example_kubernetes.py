@@ -37,5 +37,6 @@ with DAG(
         task_id="task",
         get_logs=True,
         is_delete_operator_pod=False,
-        tolerations=tolerations
+        trigger_rule="always"
+        #tolerations=tolerations
     )
