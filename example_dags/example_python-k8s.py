@@ -51,7 +51,7 @@ default_args = {
 
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
-    schedule_interval=timedelta(None), tags=['example'])
+    schedule_interval=None, tags=['example'])
 '''
 def sample1():
     with open("sample.json","r") as f:
