@@ -69,7 +69,7 @@ def sample_fun():
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-python_task = KubernetesPodOperator(namespace='default',
+python_task = KubernetesPodOperator(namespace='airflowop-system',
                                     image="glmlopsuser/my-airflow-python:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
                                     cmds=["python"],
@@ -82,7 +82,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     dag=dag
                                     )
 
-bash_task = KubernetesPodOperator(namespace='default',
+bash_task = KubernetesPodOperator(namespace='airflowop-system',
                                   image="glmlopsuser/my-airflow-python:0.2",
                                   image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
                                   cmds=["python"],
