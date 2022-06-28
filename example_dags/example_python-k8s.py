@@ -20,7 +20,7 @@ This is an example dag for using the KubernetesPodOperator.
 """
 import logging
 import json
-import airflow
+from airflow.utils.dates import days_ago
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
     KubernetesPodOperator
@@ -32,7 +32,7 @@ print("hi")
 
 # log = logging.getLogger(__name__)
 
-
+'''
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -40,13 +40,18 @@ default_args = {
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5)
+    'max_active_runs': 1,
+    'retries': 3
+}
+'''
+default_args = {
+    'owner': 'airflow',
+    'start_date': days_ago(2)
 }
 
 dag = DAG(
     'kubernetes_sample', default_args=default_args,
-    schedule_interval=timedelta(minutes=10), tags=['example'])
+    schedule_interval=timedelta(None), tags=['example'])
 '''
 def sample1():
     with open("sample.json","r") as f:
