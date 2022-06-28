@@ -3,13 +3,13 @@ import logging
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.utils.dates import days_ago
-
+from datetime import datetime, timedelta
 log = logging.getLogger(__name__)
 
 
 default_args = {
     'owner': 'airflow',
-    'start_date': days_ago(2)
+    'start_date': datetime(1970,1,1)
 }
 
 with DAG(
