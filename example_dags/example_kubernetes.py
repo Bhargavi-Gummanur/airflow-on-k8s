@@ -35,9 +35,9 @@ with DAG(
         name="airflow-test-pod",
         node_selectors={"kubernetes.io/hostname": "gl1-cp-tr-node1.gl-hpe.local"},
     '''
+    #namespace="airflowop-system",
     #pod_template_file="/usr/local/airflow/dags/gitdags/example_dags/example-python.yaml",
     k = KubernetesPodOperator(
-        namespace="airflowop-system",
         labels={"foo": "bar"},
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
