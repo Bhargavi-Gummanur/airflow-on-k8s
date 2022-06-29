@@ -46,7 +46,7 @@ default_args = {
 
 dag = DAG(
     'kubernetes_sample_cmf', default_args=default_args,
-    schedule_interval=timedelta(seconds=10), tags=['example'])
+     schedule_interval=None, tags=['example'])
 '''
 def sample1():
     with open("sample.json","r") as f:
@@ -66,7 +66,7 @@ start = DummyOperator(task_id='run_this_first', dag=dag)
 
 python_task = KubernetesPodOperator(namespace='airflowop-system',
                                     image="glmlopsuser/my-airflow-python:0.2",
-                                    image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
+                                    image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
                                     cmds=["python"],
                                     arguments=["task1.py","hi"],
                                     labels={"foo": "bar"},
@@ -79,7 +79,7 @@ python_task = KubernetesPodOperator(namespace='airflowop-system',
 
 bash_task = KubernetesPodOperator(namespace='airflowop-system',
                                   image="glmlopsuser/my-airflow-python:0.2",
-                                  image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata1')],
+                                  image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
                                   cmds=["python"],
                                   arguments=["task2.py","hi"],
                                   labels={"foo": "bar"},
