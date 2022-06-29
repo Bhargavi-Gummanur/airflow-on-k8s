@@ -34,9 +34,10 @@ with DAG(
         arguments=["echo hello here"],
         labels={"foo": "bar"},
         name="airflow-test-pod",
+        node_schedulers={"kubernetes.io/hostname": "gl1-cp-tr-node1.gl-hpe.local"}
         task_id="task",
         get_logs=True,
         is_delete_operator_pod=False,
-        trigger_rule="dummy"
+       \
         #tolerations=tolerations
     )
