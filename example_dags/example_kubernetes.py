@@ -42,7 +42,7 @@ with DAG(
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
         task_id="task",
-        pod_template_file="example-python.yaml",
+        pod_template_file="./example-python.yaml",
         get_logs=True,
         is_delete_operator_pod=False
        
