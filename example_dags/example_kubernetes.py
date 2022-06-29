@@ -28,13 +28,18 @@ with DAG(
     ]
 
     k = KubernetesPodOperator(
-        namespace='default',
+        namespace='airflowop-system',
+        '''
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
         labels={"foo": "bar"},
         name="airflow-test-pod",
         node_selectors={"kubernetes.io/hostname": "gl1-cp-tr-node1.gl-hpe.local"},
+        '''
+        pod_template_file="/usr/local/airflow/dags/gitdags/example_dags/example-python.yaml",
+        cmds=["bash", "-cx"],
+        arguments=["echo hello here"],
         task_id="task",
         get_logs=True,
         is_delete_operator_pod=False,
