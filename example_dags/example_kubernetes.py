@@ -38,6 +38,7 @@ with DAG(
         node_selectors={"kubernetes.io/hostname": "gl1-cp-tr-node1.gl-hpe.local"},
         '''
         #pod_template_file="/usr/local/airflow/dags/gitdags/example_dags/example-python.yaml",
+        labels={"foo": "bar"},
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
         task_id="task",

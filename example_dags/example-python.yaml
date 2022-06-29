@@ -1,39 +1,21 @@
-
 apiVersion: v1
 kind: Pod
 metadata:
-  name: k8spod-
+  name: python-app
+  namespace: airflowop-system
+  labels:
+    app: python
 spec:
-  initContainers:
-    - name: init-container
-      image: "ubuntu:latest"
-      command: ["bash", "-cx"]
-      args: ["echo hello > /tmp/mnt/hello.txt"]
-      resources:
-        limits:
-          cpu: 500m
-          memory: 1Gi
-        requests:
-          cpu: 500m
-          memory: 1Gi
-      volumeMounts:
-        - name: shared-volume
-          mountPath: "/tmp/mnt"
   containers:
-    - name: base
-      command: ["bash", "-cx"]
-      args: ["cat /tmp/mnt/hello.txt"]
-      image: "ubuntu:latest"
-      imagePullPolicy: Always
-      ports: []
-      resources:
+  - name: python-app
+    image: "ubuntu:16.04"
+    resources:
         limits:
-          cpu: 500m
-          memory: 1Gi
+          cpu: "100m"
+          memory: "500Mi"
         requests:
-          cpu: 500m
-          memory: 1Gi
-     
-  hostNetwork: false
-  restartPolicy: Never
-  
+          cpu: "100m"
+          memory: "500Mi"
+  nodeName: gl1-cp-tr-node1.gl-hpe.local
+  nodeSelector:
+    kubernetes.io/hostname: gl1-cp-tr-node1.gl-hpe.local
