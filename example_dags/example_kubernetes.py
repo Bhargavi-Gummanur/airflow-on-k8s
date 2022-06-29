@@ -42,7 +42,7 @@ with DAG(
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
         task_id="task",
-        pod_template_file="/usr/local/airflow/dags/gitdags/example_dags/example-python.yaml",
+        pod_template_file="pod_test.yaml",
         get_logs=True,
         is_delete_operator_pod=False
        
