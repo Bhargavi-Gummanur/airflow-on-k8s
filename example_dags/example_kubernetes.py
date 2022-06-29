@@ -32,10 +32,8 @@ with DAG(
         image="ubuntu:16.04",
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
-        labels={"foo": "bar"},
+     
         name="airflow-test-pod",
         task_id="task",
-        get_logs=True,
-        is_delete_operator_pod=False,
-        tolerations=tolerations
+        
     )
