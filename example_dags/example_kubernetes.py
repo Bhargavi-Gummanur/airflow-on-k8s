@@ -16,6 +16,7 @@ with DAG(
     dag_id='example_kubernetes_operator',
     default_args=default_args,
     schedule_interval=timedelta(minutes=10),
+    max_active_runs=1,
     tags=['example'],
 ) as dag:
 
