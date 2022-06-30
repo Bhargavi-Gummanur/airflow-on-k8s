@@ -15,7 +15,7 @@ default_args = {
 with DAG(
     dag_id='example_kubernetes_operator',
     default_args=default_args,
-    schedule_interval=timedelta(minutes=5),
+    schedule_interval=timedelta(minutes=10),
     tags=['example'],
 ) as dag:
 
@@ -29,7 +29,8 @@ with DAG(
     resource_config = {'limit_memory': '1024Mi', 'limit_cpu': '500m'}
     k = KubernetesPodOperator(
         namespace='rakeshl-test',
-        image="ubuntu:16.04",
+        image="glmlopsuser/my-airflow-python:0.2",
+        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
         resources=resource_config,
