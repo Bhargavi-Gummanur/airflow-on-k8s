@@ -15,7 +15,7 @@ default_args = {
 with DAG(
     dag_id='example_kubernetes_operator',
     default_args=default_args,
-    schedule_interval=timedelta(minutes=10),
+    schedule_interval=timedelta(minutes=60),
     max_active_runs=1,
     tags=['example'],
 ) as dag:
@@ -31,7 +31,7 @@ with DAG(
     k = KubernetesPodOperator(
         namespace='rakeshl-test',
         image="glmlopsuser/my-airflow-python:0.2",
-        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-metadata2')],
+        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         cmds=["bash", "-cx"],
         arguments=["echo hello here"],
         resources=resource_config,
