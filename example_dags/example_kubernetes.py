@@ -33,7 +33,7 @@ with DAG(
         image="glmlopsuser/my-airflow-python:0.2",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         cmds=["bash", "-cx"],
-        arguments=["echo hello here"],
+        arguments=["python","task1.py","helloarguements"],
         resources=resource_config,
         name="airflow-test-pod",
         task_id="task",
