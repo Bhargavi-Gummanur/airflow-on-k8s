@@ -2,6 +2,7 @@ import logging
 
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
+from airflow.operators.bash_operator import BashOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime, timedelta
 log = logging.getLogger(__name__)
