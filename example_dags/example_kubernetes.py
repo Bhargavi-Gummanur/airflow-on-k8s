@@ -17,7 +17,7 @@ with DAG(
     default_args=default_args,
     schedule_interval=timedelta(minutes=10),
     max_active_runs=1,
-    dag_concurrency = 1,
+    concurrency = 1,
 
     tags=['example'],
 ) as dag:
