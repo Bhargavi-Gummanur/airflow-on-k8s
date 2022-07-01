@@ -33,9 +33,21 @@ with DAG(
         image="glmlopsuser/my-airflow-python:0.2",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         cmds=["python"],
-        arguments=['task2.py','print("helloarguements")'],
+        arguments=['task1.py','print("helloagain!")'],
         resources=resource_config,
         name="airflow-test-pod",
         task_id="task",
         
     )
+    k1 = KubernetesPodOperator(
+        namespace='rakeshl-test',
+        image="glmlopsuser/my-airflow-python:0.2",
+        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        cmds=["python"],
+        arguments=['task2.py','print("helloarg!!!!!")'],
+        resources=resource_config,
+        name="airflow-test-pod2",
+        task_id="task2",
+        
+    )
+    k >> k1
