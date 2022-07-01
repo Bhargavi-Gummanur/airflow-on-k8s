@@ -28,14 +28,21 @@ with DAG(
         }
     ]
     resource_config = {'limit_memory': '1024Mi', 'limit_cpu': '500m'}
+    return_value = {"hi":"1"}
     k = KubernetesPodOperator(
         namespace='rakeshl-test',
         image="glmlopsuser/my-airflow-python:0.2",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
-        cmds=["bash", "-cx"],
-        arguments=["python","task1.py","helloarguements"],
+        cmds=["sh", "-c", "mkdir -p /airflow/xcom/;echo '[1,2,3,4]' > /airflow/xcom/return.json"],
+        #arguments=['echo \'{}\' > /airflow/xcom/return.json'.format(return_value)],
         resources=resource_config,
         name="airflow-test-pod",
         task_id="task",
+        do_xcom_push=True
         
     )
+    pod_task_xcom_result = BashOperator(
+        bash_command="echo \"{{ task_instance.xcom_pull('write-xcom')[0] }}\"",
+        task_id="pod_task_xcom_result",
+    )
+    task >> pod_task_xcom_result
