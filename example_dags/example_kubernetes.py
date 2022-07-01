@@ -46,4 +46,4 @@ with DAG(
         bash_command="echo \"{{ task_instance.xcom_pull('write-xcom')[0] }}\"",
         task_id="pod_task_xcom_result",
     )
-    task >> pod_task_xcom_result
+    k >> pod_task_xcom_result
