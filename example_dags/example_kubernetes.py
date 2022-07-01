@@ -13,9 +13,9 @@ default_args = {
 }
 
 with DAG(
-    dag_id='example_kubernetes_operator',
+    dag_id='example_kubernetes_operatortest',
     default_args=default_args,
-    schedule_interval=timedelta(minutes=5),
+    schedule_interval=timedelta(minutes=10),
     max_active_runs=1,
     tags=['example'],
 ) as dag:
