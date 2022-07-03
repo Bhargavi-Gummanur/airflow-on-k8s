@@ -32,7 +32,7 @@ with DAG(
     resource_config = {'limit_memory': '1024Mi', 'limit_cpu': '500m'}
     k = KubernetesPodOperator(
         namespace='rakeshl-test',
-        image="glmlopsuser/my-airflow-python:0.2",
+        image="glmlopsuser/my-airflow-metadata:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         cmds=["python"],
         arguments=['task2.py','print("helloagain!")'],
@@ -43,7 +43,7 @@ with DAG(
     )
     k1 = KubernetesPodOperator(
         namespace='rakeshl-test',
-        image="glmlopsuser/my-airflow-python:0.2",
+        image="glmlopsuser/my-airflow-metadata:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         cmds=["python"],
         arguments=['task1.py','print("helloarg!!!!!")'],
