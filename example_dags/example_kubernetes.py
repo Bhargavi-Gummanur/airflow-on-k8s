@@ -12,15 +12,15 @@ default_args = {
     'start_date': datetime(2000,1,1)
 }
 
-# volume = k8s.V1Volume(
-#     name='workspace-3-volume',
-#     # persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='workspace-volume-3-claim'),
-#     host_path=k8s.V1HostPathVolumeSource(path='/workspace'),
-# )
+volume = k8s.V1Volume(
+    name='workspace-3-volume',
+    # persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='workspace-volume-3-claim'),
+    host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
+)
 
 volume_mounts = [
     k8s.V1VolumeMount(
-        mount_path='/workspace', name='workspace-3-volume', sub_path=None,
+        mount_path='/sharedvol', name='workspace-3-volume', sub_path=None,
         read_only=False
     )
 ]
@@ -46,6 +46,7 @@ with DAG(
         namespace='rakeshl-test',
         image="glmlopsuser/my-airflow-metadata:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        volumes=[volume],
         volume_mounts=volume_mounts,
         cmds=["python"],
         arguments=['task1.py','print("helloagain!")'],
@@ -58,6 +59,7 @@ with DAG(
         namespace='rakeshl-test',
         image="glmlopsuser/my-airflow-metadata:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        volumes=[volume],
         volume_mounts=volume_mounts,
         cmds=["python"],
         arguments=['task2.py','print("helloarg!!!!!")'],
