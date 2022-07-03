@@ -12,6 +12,18 @@ default_args = {
     'start_date': datetime(2000,1,1)
 }
 
+# volume = k8s.V1Volume(
+#     name='workspace-3-volume',
+#     # persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='workspace-volume-3-claim'),
+#     host_path=k8s.V1HostPathVolumeSource(path='/workspace'),
+# )
+
+volume_mounts = [
+    k8s.V1VolumeMount(
+        mount_path='/workspace', name='workspace-3-volume', sub_path=None,
+        read_only=False
+    )
+]
 with DAG(
     dag_id='example_kubernetes_operatortest',
     default_args=default_args,
@@ -34,8 +46,9 @@ with DAG(
         namespace='rakeshl-test',
         image="glmlopsuser/my-airflow-metadata:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        volume_mounts=volume_mounts,
         cmds=["python"],
-        arguments=['task2.py','print("helloagain!")'],
+        arguments=['task1.py','print("helloagain!")'],
         resources=resource_config,
         name="airflow-test-pod",
         task_id="task",
@@ -45,8 +58,9 @@ with DAG(
         namespace='rakeshl-test',
         image="glmlopsuser/my-airflow-metadata:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        volume_mounts=volume_mounts,
         cmds=["python"],
-        arguments=['task1.py','print("helloarg!!!!!")'],
+        arguments=['task2.py','print("helloarg!!!!!")'],
         resources=resource_config,
         name="airflow-test-pod2",
         task_id="task2",
