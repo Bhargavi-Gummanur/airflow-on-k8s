@@ -39,7 +39,7 @@ def extract_metadata(**context):
     #params = {"dag_id":dag_id,"task_id":task_id,"run_id":run_id}
     context['task_instance'].xcom_push(key='file', value=run_id) 
     #print(os.environ["AIRFLOW_VAR_PATH"])
-    return (dag_id,task_id,run_id)
+    return run_id
 with DAG(
     dag_id='example_kubernetes_operatortest',
     default_args=default_args,
