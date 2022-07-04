@@ -52,7 +52,7 @@ def extract_metadata(**context):
     params = {"dag_id":dag_id,"task_id":task_id,"run_id":run_id}
     context['task_instance'].xcom_push(key='file', value=params) 
     #print(os.environ["AIRFLOW_VAR_PATH"])
-    return {"dag_id":dag_id,"task_id":task_id,"run_id":run_id}
+    return (dag_id,task_id,run_id)
   
 
 def print_stats_schema(params):
@@ -125,12 +125,12 @@ with DAG(
         op_kwargs={'params': "{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"}
     )
 
-'''
+
 dag_id = extract_metadata()[0]
 task_id = extract_metadata()[1]
 run_id = extract_metadata()[2]
 print(dag_id,task_id,run_id)
-'''
+
     
 
 #t1
