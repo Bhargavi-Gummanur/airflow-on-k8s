@@ -125,12 +125,12 @@ with DAG(
         op_kwargs={'dag_id': "analyse_csv_datav1",'task_id':'extract_metadata','run_id':"{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"}
     )
 
-
+'''
 dag_id = extract_metadata()[0]
 task_id = extract_metadata()[1]
 run_id = extract_metadata()[2]
 print(dag_id,task_id,run_id)
-
+'''
     
 
 #t1
