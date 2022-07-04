@@ -57,7 +57,7 @@ def extract_metadata(**context):
 def print_stats_schema(dag_id,task_id,run_id):
     #dag_id = ti.xcom_pull(key="file", task_ids='Tasks1')
     print("dag_id",dag_id)
-    print(type(json.loads(dag_id)))
+    #print(dag_id[0])
     print(dag_id[0])
     print("task_id",task_id)
     print("run_id",run_id)
