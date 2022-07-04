@@ -91,4 +91,4 @@ with DAG(
         task_id="print_stats_schema",
         
     )
-   t1 >> k >> k1
+    t1 >> k >> k1
