@@ -50,19 +50,19 @@ def extract_metadata(**context):
     #task_id
     task_id = context['task_instance'].task_id
     params = {"dag_id":dag_id,"task_id":task_id,"run_id":run_id}
-    context['task_instance'].xcom_push(key='file', value=params) 
+    context['task_instance'].xcom_push(key='file', value=run_id) 
     #print(os.environ["AIRFLOW_VAR_PATH"])
     return (dag_id,task_id,run_id)
   
 
-def print_stats_schema(params):
+def print_stats_schema(dag_id,task_id,run_id):
     #dag_id = ti.xcom_pull(key="file", task_ids='Tasks1')
-    print(params)
-    #print("dag_id",dag_id)
-    #print(dag_id[0])
-    print(type(params))
-    #print("task_id",task_id)
-    #print("run_id",run_id)
+    #print(params)
+    print("dag_id",dag_id)
+    # print(dag_id)
+    #print(type(params))
+    print("task_id",task_id)
+    print("run_id",run_id)
     
 
 
@@ -122,7 +122,7 @@ with DAG(
         python_callable = print_stats_schema,
         #executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata:0.1"}}
         #executor_config={"KubernetesExecutor": {"image": "python:3.8"}}
-        op_kwargs={'params': "{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"}
+        op_kwargs={'dag_id': "analyse_csv_datav1",'task_id':'extract_metadata','run_id':"{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"}
     )
 
 
