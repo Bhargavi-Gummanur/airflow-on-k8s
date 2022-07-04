@@ -46,7 +46,7 @@ def extract_metadata(**context):
     
     dag_id = context['task_instance'].dag_id
     #print("run id")
-    run_id = context['task_instance'].run_id
+    run_id = context['dag_run'].run_id
     #task_id
     task_id = context['task_instance'].task_id
     task_instance.xcom_push(key='file', value=(dag_id,task_id,run_id)) 
