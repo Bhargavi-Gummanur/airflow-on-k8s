@@ -49,7 +49,7 @@ def extract_metadata(**context):
     run_id = context['dag_run'].run_id
     #task_id
     task_id = context['task_instance'].task_id
-    task_instance.xcom_push(key='file', value=(dag_id,task_id,run_id)) 
+    context['task_instance'].xcom_push(key='file', value=(dag_id,task_id,run_id)) 
     #print(os.environ["AIRFLOW_VAR_PATH"])
     return (dag_id,task_id,run_id)
   
