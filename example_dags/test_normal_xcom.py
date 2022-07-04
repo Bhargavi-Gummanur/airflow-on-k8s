@@ -55,6 +55,7 @@ def extract_metadata(**context):
   
 
 def print_stats_schema(dag_id,task_id,run_id):
+    #dag_id = ti.xcom_pull(key="file", task_ids='Tasks1')
     print("dag_id",dag_id)
     print("task_id",task_id)
     print("run_id",run_id)
@@ -117,12 +118,16 @@ with DAG(
         python_callable = print_stats_schema,
         #executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata:0.1"}}
         #executor_config={"KubernetesExecutor": {"image": "python:3.8"}}
-        op_kwargs={'dag_id': {{ task_instance.xcom_pull(task_ids='Task1',key="file") }}[0], 'task_id': {{ task_instance.xcom_pull(task_ids='Task1',key="file") }}[1],'run_id':{{ task_instance.xcom_pull(task_ids='Task1',key="file") }}[2]}
+        op_kwargs={'dag_id': "{{ task_instance.xcom_pull(task_ids='Task1',key="file") }}"[0], 'task_id': "{{ task_instance.xcom_pull(task_ids='Task1',key="file") }}"[1],'run_id':"{{ task_instance.xcom_pull(task_ids='Task1',key="file") }}"[2]}
     )
 
-    
-
+'''
+dag_id = extract_metadata()[0]
+task_id = extract_metadata()[1]
+run_id = extract_metadata()[2]
+print(dag_id,task_id,run_id)
+'''
     
 
 #t1
-t1 
+t1 >> t2
