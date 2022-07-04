@@ -118,7 +118,7 @@ with DAG(
         python_callable = print_stats_schema,
         #executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata:0.1"}}
         #executor_config={"KubernetesExecutor": {"image": "python:3.8"}}
-        op_kwargs={'dag_id': "{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"[0], 'task_id': "{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"[1],'run_id':"{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"[2]}
+        op_kwargs={'dag_id': "{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}", 'task_id': "{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}",'run_id':"{{ task_instance.xcom_pull(task_ids='Task1',key='file') }}"}
     )
 
 '''
