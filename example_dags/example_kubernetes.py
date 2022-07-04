@@ -24,6 +24,21 @@ volume_mounts = [
         read_only=False
     )
 ]
+
+def extract_metadata(**context):
+    #store = ti.xcom_pull(key = 'store')
+    #filepath = Variable.get("datapath")
+    #folder_path = "data/adult_data.csv"
+    
+    #dag_id = context['task_instance'].dag_id
+    #print("run id")
+    run_id = context['dag_run'].run_id
+    #task_id
+    #task_id = context['task_instance'].task_id
+    #params = {"dag_id":dag_id,"task_id":task_id,"run_id":run_id}
+    context['task_instance'].xcom_push(key='file', value=run_id) 
+    #print(os.environ["AIRFLOW_VAR_PATH"])
+    return (dag_id,task_id,run_id)
 with DAG(
     dag_id='example_kubernetes_operatortest',
     default_args=default_args,
@@ -42,30 +57,38 @@ with DAG(
         }
     ]
     resource_config = {'limit_memory': '1024Mi', 'limit_cpu': '500m'}
+
+    t1 = PythonOperator(
+        task_id='extract_run_id',
+        python_callable=extract_metadata,
+        provide_context=True
+        #executor_config={"KubernetesExecutor": {"image": "docker.io/glmlopsuser/airflow-metadata:0.1"}}
+        #executor_config={"KubernetesExecutor": {"image": "python:3.8"}}
+    )
     k = KubernetesPodOperator(
         namespace='rakeshl-test',
-        image="glmlopsuser/my-airflow-metadata:0.4",
+        image="glmlopsuser/my-airflow-tfdv:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         volumes=[volume],
         volume_mounts=volume_mounts,
         cmds=["python"],
-        arguments=['task1.py','print("helloagain!")'],
+        arguments=['task1.py',"example_kubernetes_operatortest","extract_metadata_stats_schema","{{ task_instance.xcom_pull(task_ids='extract_run_id',key='file') }}"],
         resources=resource_config,
         name="airflow-test-pod",
-        task_id="task",
+        task_id="extract_metadata_stats_schema",
         
     )
     k1 = KubernetesPodOperator(
         namespace='rakeshl-test',
-        image="glmlopsuser/my-airflow-metadata:0.4",
+        image="glmlopsuser/my-airflow-tfdv:0.4",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
         volumes=[volume],
         volume_mounts=volume_mounts,
         cmds=["python"],
-        arguments=['task2.py','print("helloarg!!!!!")'],
+        arguments=['task2.py',"example_kubernetes_operatortest","extract_metadata_stats_schema","{{ task_instance.xcom_pull(task_ids='extract_run_id',key='file') }}"],
         resources=resource_config,
         name="airflow-test-pod2",
-        task_id="task2",
+        task_id="print_stats_schema",
         
     )
-    k >> k1
+   t1 >> k >> k1
