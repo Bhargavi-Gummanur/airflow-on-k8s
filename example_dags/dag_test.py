@@ -27,7 +27,7 @@ compute_resources = k8s.V1ResourceRequirements(
     limits={"cpu": "800m", "memory": "3Gi"},
     requests={"cpu": "800m", "memory": "3Gi"}
 )
-
+resource_config = {'limit_memory': '1024Mi', 'limit_cpu': '500m'}
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -41,7 +41,7 @@ default_args = {
 
 dag = DAG(
     'kubernetes_sample_v3', default_args=default_args,
-    schedule_interval=timedelta(minutes=10), tags=['example'])
+    schedule_interval=timedelta(seconds=10), tags=['example'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 '''
@@ -60,6 +60,7 @@ python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
                                     arguments=["test.py","/bd-fs-mnt/TenantShare/repo/data/wordcount.txt"],
+                                    resources=resource_config,
                                     #labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
