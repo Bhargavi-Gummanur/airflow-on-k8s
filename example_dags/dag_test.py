@@ -45,15 +45,18 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 def sample_fun():
-    value = {"hi":"hello"}
-    print(value)
+    #value = {"hi":"hello"}
+    #print(value)
+    f = open("/bd-fs-mnt/TenantShare/repo/data/wordcount.txt", "r")
+    print(f.read())
+    return "print('value')"
     #with open("sample.json","w") as f:
     #    json.dump(value,f)
 
 
-python_task = KubernetesPodOperator(namespace='default',
+python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
                                     image="python:3.6",
-                                    #cmds=["python", "-c"],
+                                    cmds=["python", "-c"],
                                     arguments=[sample_fun()],
                                     #labels={"foo": "bar"},
                                     name="passing-python",
@@ -66,7 +69,7 @@ python_task = KubernetesPodOperator(namespace='default',
                                     
                                     dag=dag
                                     )
-
+'''
 bash_task = KubernetesPodOperator(namespace='default',
                                   image="ubuntu:16.04",
                                   cmds=["bash", "-cx"],
@@ -78,6 +81,6 @@ bash_task = KubernetesPodOperator(namespace='default',
                                   #get_logs=True,
                                   dag=dag
                                   )
-
+'''
 python_task.set_upstream(start)
-bash_task.set_upstream(start)
+#bash_task.set_upstream(start)
