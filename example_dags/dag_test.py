@@ -44,6 +44,7 @@ dag = DAG(
     schedule_interval=timedelta(minutes=10), tags=['example'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
+'''
 def sample_fun():
     #value = {"hi":"hello"}
     #print(value)
@@ -53,11 +54,12 @@ def sample_fun():
     #with open("sample.json","w") as f:
     #    json.dump(value,f)
 
-
+'''
 python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
-                                    image="python:3.6",
-                                    cmds=["python", "-c"],
-                                    arguments=[sample_fun()],
+                                    image="glmlopsuser/sample-path-check:0.1",
+                                    image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
+                                    cmds=["python"],
+                                    arguments=["test.py","/bd-fs-mnt/TenantShare/repo/data/wordcount.txt"],
                                     #labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
