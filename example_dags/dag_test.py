@@ -41,7 +41,7 @@ default_args = {
 
 dag = DAG(
     'kubernetes_sample_v3', default_args=default_args,
-    schedule_interval=timedelta(seconds=10), tags=['example'])
+    schedule_interval=timedelta(seconds=10),max_active_runs=1,concurrency = 1, tags=['example'])
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 '''
@@ -56,7 +56,7 @@ def sample_fun():
 
 '''
 python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
-                                    image="glmlopsuser/sample-path-check:0.1",
+                                    image="glmlopsuser/sample-path-check:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
                                     arguments=["test.py","/bd-fs-mnt/TenantShare/repo/data/wordcount.txt"],
