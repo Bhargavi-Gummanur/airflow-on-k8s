@@ -40,8 +40,8 @@ default_args = {
 }
 volume = k8s.V1Volume(
     name='workspace-3-volume',
-    persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='twitter-stream-pvc-sample'),
-    host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
+    persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='twitter-stream-pvc'),
+    #host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
 )
 
 volume_mounts = [
@@ -71,7 +71,7 @@ python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
                                     image="glmlopsuser/sample-path-check:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
-                                    arguments=["test.py","/tmp/sharedvol/bd-fs-mnt/TenantShare/repo/data/wordcount.txt"],
+                                    arguments=["test.py"," /opt/bluedata/mapr/mnt/hcp-datafabric.gl-hpe.local/exthcp/tenant-42/fsmount/repo/data/wordcount.txt"],
                                     resources=resource_config,
                                     #labels={"foo": "bar"},
                                     name="passing-python",
