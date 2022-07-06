@@ -9,7 +9,12 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import \
 from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
 from airflow.kubernetes import pod
+from airflow.kubernetes.volume import Volume 
+#from airflow.kubernetes.volume import Volume
 from kubernetes.client import models as k8s
+from kubernetes.client.models import V1Volume
+import airflow.kubernetes.volume
+
 #from airflow.contrib.kubernetes import pod
 import json
 
@@ -44,7 +49,7 @@ volume_config= {
         'claimName': 'twitter-stream-pvc'
       }
     }
-volume = k8s.V1Volume(name='mapr-pv-594dde0f-b7b4-4444-9ae4-1732c751ff84', configs=volume_config)
+volume = airflow.kubernetes.volume.Volume(name='mapr-pv-594dde0f-b7b4-4444-9ae4-1732c751ff84', configs=volume_config)
 # volume = k8s.V1Volume(
 #     name='workspace-3-volume',
 #     persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='twitter-stream-pvc'),
