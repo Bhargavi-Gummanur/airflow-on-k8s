@@ -38,6 +38,18 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta(minutes=5)
 }
+volume = k8s.V1Volume(
+    name='workspace-3-volume',
+    persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='twitter-stream-pvc'),
+    #host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
+)
+
+volume_mounts = [
+    k8s.V1VolumeMount(
+        mount_path='/sharedvol', name='workspace-3-volume', sub_path=None,
+        read_only=False
+    )
+]
 
 dag = DAG(
     'kubernetes_sample_v3', default_args=default_args,
@@ -59,11 +71,13 @@ python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
                                     image="glmlopsuser/sample-path-check:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
-                                    arguments=["test.py","/bd-fs-mnt/TenantShare/repo/data/wordcount.txt"],
+                                    arguments=["test.py","/sharedvol/bd-fs-mnt/TenantShare/repo/data/wordcount.txt"],
                                     resources=resource_config,
                                     #labels={"foo": "bar"},
                                     name="passing-python",
                                     task_id="passing-task-python",
+                                    volume=[volume],
+                                    volume_mounts=[volume_mounts],
                                     #resources=pod_resources,
                                     #pod_template_file="/opt/airflow/dags/example-python.yaml",
                                    
