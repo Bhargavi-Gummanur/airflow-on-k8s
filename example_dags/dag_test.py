@@ -46,7 +46,7 @@ volume = k8s.V1Volume(
 
 volume_mounts = [
     k8s.V1VolumeMount(
-        mount_path='/', name='workspace-3-volume', sub_path=None,
+        mount_path='/sharedvol', name='workspace-3-volume', sub_path=None,
         read_only=False
     )
 ]
@@ -71,7 +71,7 @@ python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
                                     image="glmlopsuser/sample-path-check:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
-                                    arguments=["test.py","/opt/bluedata/mapr/mnt/hcp-datafabric.gl-hpe.local/exthcp/k8s-476--kpiloiuoup/twitter_analysis.py"],
+                                    arguments=["test.py","/sharedvol/opt/bluedata/mapr/mnt/hcp-datafabric.gl-hpe.local/exthcp/k8s-476--kpiloiuoup/twitter_analysis.py"],
                                     resources=resource_config,
                                     #labels={"foo": "bar"},
                                     name="passing-python",
