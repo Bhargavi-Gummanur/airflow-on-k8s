@@ -46,7 +46,7 @@ volume = k8s.V1Volume(
 
 volume_mounts = [
     k8s.V1VolumeMount(
-        mount_path='/sharedvol', name='workspace-3-volume', sub_path=None,
+        mount_path='/', name='workspace-3-volume', sub_path=None,
         read_only=False
     )
 ]
