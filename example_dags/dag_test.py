@@ -41,7 +41,7 @@ default_args = {
 volume = k8s.V1Volume(
     name='workspace-3-volume',
     persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='twitter-stream-pvc')
-    #host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
+    host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
 )
 
 volume_mounts = [
