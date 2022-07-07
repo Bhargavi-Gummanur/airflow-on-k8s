@@ -85,7 +85,7 @@ with DAG(
     )
     k = KubernetesPodOperator(
         namespace='sureshtest-dontdelete',
-        image="glmlopsuser/sample-path-check:0.4",
+        image="glmlopsuser/airflow-dvc:0.5",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
         volumes=[volume],
         volume_mounts=volume_mounts,
@@ -98,7 +98,7 @@ with DAG(
     )
     k1 = KubernetesPodOperator(
         namespace='sureshtest-dontdelete',
-        image="glmlopsuser/sample-path-check:0.4",
+        image="glmlopsuser/airflow-dvc:0.5",
         image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
         volumes=[volume],
         volume_mounts=volume_mounts,
