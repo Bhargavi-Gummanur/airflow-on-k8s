@@ -12,8 +12,8 @@ default_args = {
     'owner': 'airflow',
     'start_date': datetime(2000,1,1)
 }
-path_task1 = "/sharedvol/fsmount/repo/data/mlops_dvc/task1.py"
-path_task2 = "/sharedvol/fsmount/repo/data/mlops_dvc/task2.py"
+path_task1 = "task1.py"
+path_task2 = "task2.py"
 '''
 volume = k8s.V1Volume(
     name='workspace-3-volume',
