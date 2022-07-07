@@ -60,7 +60,7 @@ def extract_metadata(**context):
 with DAG(
     dag_id='example_kubernetes_operatortest',
     default_args=default_args,
-    schedule_interval=timedelta(minutes=10),
+    schedule_interval=timedelta(seconds=10),
     max_active_runs=1,
     concurrency = 1,
 
