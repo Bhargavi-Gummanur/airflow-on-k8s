@@ -46,10 +46,10 @@ default_args = {
 volume_config= {
     'persistentVolumeClaim':
       {
-        'claimName': 'twitter-stream-pvc'
+        'claimName': 'pvc-airflow'
       }
     }
-volume = airflow.kubernetes.volume.Volume(name='mapr-pv-594dde0f-b7b4-4444-9ae4-1732c751ff84', configs=volume_config)
+volume = airflow.kubernetes.volume.Volume(name='mapr-pv-airflow-1', configs=volume_config)
 # volume = k8s.V1Volume(
 #     name='workspace-3-volume',
 #     persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='twitter-stream-pvc'),
@@ -58,7 +58,7 @@ volume = airflow.kubernetes.volume.Volume(name='mapr-pv-594dde0f-b7b4-4444-9ae4-
 
 volume_mounts = [
     k8s.V1VolumeMount(
-        mount_path='/sharedvol', name='mapr-pv-594dde0f-b7b4-4444-9ae4-1732c751ff84', sub_path=None,
+        mount_path='/sharedvol', name='mapr-pv-airflow-1', sub_path=None,
         read_only=False
     )
 ]
@@ -83,7 +83,7 @@ python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
                                     image="glmlopsuser/sample-path-check:0.2",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
-                                    arguments=["test.py","/sharedvol/twitter_analysis.py"],
+                                    arguments=["test.py","/sharedvol/fsmount/repo/data/wordcount.txt"],
                                     resources=resource_config,
                                     #labels={"foo": "bar"},
                                     name="passing-python",
