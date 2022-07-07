@@ -7,21 +7,38 @@ from datetime import datetime, timedelta
 from airflow.operators.python_operator import PythonOperator
 log = logging.getLogger(__name__)
 from kubernetes.client import models as k8s
-
+import airflow.kubernetes.volume
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2000,1,1)
 }
-
+path_task1 = "/sharedvol/fsmount/repo/data/mlops_dvc/task1.py"
+path_task2 = "/sharedvol/fsmount/repo/data/mlops_dvc/task2.py"
+'''
 volume = k8s.V1Volume(
     name='workspace-3-volume',
-    # persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='workspace-volume-3-claim'),
+    #persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name='workspace-volume-3-claim'),
     host_path=k8s.V1HostPathVolumeSource(path='/tmp'),
 )
 
 volume_mounts = [
     k8s.V1VolumeMount(
         mount_path='/sharedvol', name='workspace-3-volume', sub_path=None,
+        read_only=False
+    )
+]
+'''
+volume_config= {
+    'persistentVolumeClaim':
+      {
+        'claimName': 'pvc-airflow'
+      }
+    }
+volume = airflow.kubernetes.volume.Volume(name='mapr-pv-airflow-1', configs=volume_config)
+
+volume_mounts = [
+    k8s.V1VolumeMount(
+        mount_path='/sharedvol', name='mapr-pv-airflow-1', sub_path=None,
         read_only=False
     )
 ]
@@ -67,26 +84,26 @@ with DAG(
         #executor_config={"KubernetesExecutor": {"image": "python:3.8"}}
     )
     k = KubernetesPodOperator(
-        namespace='rakeshl-test',
-        image="glmlopsuser/my-airflow-tfdv:0.4",
-        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        namespace='sureshtest-dontdelete',
+        image="glmlopsuser/sample-path-check:0.4",
+        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
         volumes=[volume],
         volume_mounts=volume_mounts,
         cmds=["python"],
-        arguments=['task1.py',"example_kubernetes_operatortest","extract_metadata_stats_schema","{{ task_instance.xcom_pull(task_ids='extract_run_id',key='file') }}"],
+        arguments=[path_task1,"example_kubernetes_operatortest","extract_metadata_stats_schema","{{ task_instance.xcom_pull(task_ids='extract_run_id',key='file') }}"],
         resources=resource_config,
         name="airflow-test-pod",
         task_id="extract_metadata_stats_schema",
         
     )
     k1 = KubernetesPodOperator(
-        namespace='rakeshl-test',
-        image="glmlopsuser/my-airflow-tfdv:0.4",
-        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv2')],
+        namespace='sureshtest-dontdelete',
+        image="glmlopsuser/sample-path-check:0.4",
+        image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
         volumes=[volume],
         volume_mounts=volume_mounts,
         cmds=["python"],
-        arguments=['task2.py',"example_kubernetes_operatortest","extract_metadata_stats_schema","{{ task_instance.xcom_pull(task_ids='extract_run_id',key='file') }}"],
+        arguments=[path_task2,"example_kubernetes_operatortest","extract_metadata_stats_schema","{{ task_instance.xcom_pull(task_ids='extract_run_id',key='file') }}"],
         resources=resource_config,
         name="airflow-test-pod2",
         task_id="print_stats_schema",
