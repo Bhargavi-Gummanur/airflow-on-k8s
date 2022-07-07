@@ -80,7 +80,7 @@ def sample_fun():
 
 '''
 python_task = KubernetesPodOperator(namespace='sureshtest-dontdelete',
-                                    image="glmlopsuser/sample-path-check:0.2",
+                                    image="glmlopsuser/sample-path-check:0.4",
                                     image_pull_secrets=[k8s.V1LocalObjectReference('airflow-secretv3')],
                                     cmds=["python"],
                                     arguments=["test.py","/sharedvol/fsmount/repo/data/wordcount.txt"],
